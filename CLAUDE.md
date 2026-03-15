@@ -15,9 +15,14 @@ standup-tracker/
     StandupTracker.Api.Tests/  xUnit test project for the API
   frontend/
     src/app/
-      components/              Standalone Angular components
+      components/
+        standup-form/          Form to create new standup entries
+        standup-list/          List of daily standup entries
+        weekly-summary/        Weekly aggregated view with blocker stats
       services/                Injectable services (API calls, state)
       models/                  TypeScript interfaces and types
+  docs/
+    decisions/                 Architecture Decision Records (ADRs)
 ```
 
 ## Running Services
@@ -78,6 +83,7 @@ npx prettier --write "src/**/*.{ts,html,css}"
 - **CORS**: must be enabled in `Program.cs` to allow requests from `http://localhost:4200`
 - **API route prefix**: all endpoints under `/api/` (e.g., `/api/standups`, `/api/standups/{id}`)
 - **Test project**: use xUnit with `Microsoft.AspNetCore.Mvc.Testing` for integration tests
+- **InternalsVisibleTo**: test project has access to `internal` members via `.csproj` config
 
 ## Frontend Conventions (Angular + Tailwind)
 
@@ -97,6 +103,59 @@ npx prettier --write "src/**/*.{ts,html,css}"
 - **No NgModules** — no `@NgModule`, no `.module.ts` files
 - **No Angular Material** — Tailwind only
 - **No RxJS for local state** — signals for component state; RxJS is fine for HTTP and async streams
+
+## Roles
+
+### Frontend Developer
+- Works only in `/frontend` folder
+- Angular 18 standalone components, TypeScript strict mode
+- Focuses on UX, component design, HttpClient calls
+- Never touches backend files
+
+### Backend Developer
+- Works only in `/backend` folder
+- C# .NET 9 minimal API, no EF Core
+- Focuses on endpoints, models, in-memory store
+- Never touches frontend files
+
+### Doc Expert
+- Works across entire codebase read-only
+- Writes XML comments for C#, JSDoc for TypeScript
+- Updates README.md and any .md files
+- Never writes business logic
+
+### Solution Architect
+- Entry point for all new features — always consulted first
+- Owns the overall design decision before any code is written
+- Defines the contract between frontend and backend (API shape, field names, HTTP methods, response format)
+- Assigns work to Frontend Developer and Backend Developer roles
+- Reviews output from all other roles for consistency
+- Has veto power — if something violates the architecture, it gets flagged before merge
+- Never writes implementation code
+- Produces a short ADR (Architecture Decision Record) for every non-trivial feature as a `.md` file in `/docs/decisions/`
+
+### Architecture Expert
+- Reviews cross-cutting concerns
+- Checks frontend/backend contract alignment
+- Verifies CLAUDE.md conventions are followed
+- Never writes code, only reviews and advises
+
+## API Endpoints
+
+| Method | Route | Description |
+|--------|-------|-------------|
+| GET | `/api/standups` | List all entries, newest first |
+| POST | `/api/standups` | Create entry (yesterday, today, blockers) |
+| PATCH | `/api/standups/{id}/resolve` | Resolve a blocker |
+| GET | `/api/standups/weekly-summary` | Weekly aggregated stats with entries |
+
+## ADRs
+
+Architecture Decision Records live in `/docs/decisions/`. Every non-trivial feature gets one.
+
+| ADR | Feature |
+|-----|---------|
+| [001-weekly-summary](docs/decisions/001-weekly-summary.md) | Weekly Summary with blocker stats |
 
 ## Git
 

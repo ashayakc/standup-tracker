@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { StandupEntry } from '../models/standup-entry';
 import { CreateStandupRequest } from '../models/create-standup-request';
+import { WeeklySummary } from '../models/weekly-summary';
 
 @Injectable({ providedIn: 'root' })
 export class StandupService {
@@ -19,5 +20,9 @@ export class StandupService {
 
   resolveBlocker(id: string): Observable<StandupEntry> {
     return this.http.patch<StandupEntry>(`${this.apiUrl}/${id}/resolve`, {});
+  }
+
+  getWeeklySummary(): Observable<WeeklySummary[]> {
+    return this.http.get<WeeklySummary[]>(`${this.apiUrl}/weekly-summary`);
   }
 }

@@ -21,6 +21,9 @@ public static class StandupEndpoints
             return Results.Created($"/api/standups/{entry.Id}", entry);
         });
 
+        group.MapGet("/weekly-summary", (StandupStore store) =>
+            TypedResults.Ok(store.GetWeeklySummary()));
+
         group.MapPatch("/{id:guid}/resolve", (Guid id, StandupStore store) =>
         {
             var updated = store.ResolveBlocker(id);

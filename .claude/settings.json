@@ -1,15 +1,14 @@
 {
   "hooks": {
-    "afterEdit": [
+    "PreToolUse": [
       {
-        "matcher": "**/*.cs",
-        "command": "cd backend && dotnet format --include \"$CLAUDE_FILE_PATH\" --verbosity quiet 2>/dev/null || true"
-      }
-    ],
-    "afterWrite": [
-      {
-        "matcher": "**/*.cs",
-        "command": "cd backend && dotnet format --include \"$CLAUDE_FILE_PATH\" --verbosity quiet 2>/dev/null || true"
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '>>> PRE-BASH HOOK FIRED <<<' >> /tmp/hook-log.txt"
+          }
+        ]
       }
     ]
   }

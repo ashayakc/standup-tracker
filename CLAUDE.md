@@ -72,28 +72,28 @@ npx ng lint
 npx prettier --write "src/**/*.{ts,html,css}"
 ```
 
-## Backend Conventions (C# / .NET Minimal API)
+## Domain Model (FROZEN)
 
-- Use **Minimal API** style: `app.MapGet(...)`, `app.MapPost(...)`, etc. — no controllers
-- Use **record types** for all models and DTOs: `record StandupEntry(Guid Id, string Yesterday, string Today, string? Blockers, DateTime CreatedAt);`
-- **In-memory storage only**: use `ConcurrentDictionary<Guid, T>` or `IMemoryCache` — no database
-- Group endpoints into static classes with `IEndpointRouteBuilder` extension methods
-- Use `TypedResults` for responses
-- Use `builder.Services` for DI registration
-- **CORS**: must be enabled in `Program.cs` to allow requests from `http://localhost:4200`
-- **API route prefix**: all endpoints under `/api/` (e.g., `/api/standups`, `/api/standups/{id}`)
-- **Test project**: use xUnit with `Microsoft.AspNetCore.Mvc.Testing` for integration tests
-- **InternalsVisibleTo**: test project has access to `internal` members via `.csproj` config
+The shared contract between frontend and backend. Changes here require Solution Architect approval.
 
-## Frontend Conventions (Angular + Tailwind)
+### StandupEntry
+| Field | Type | Notes |
+|-------|------|-------|
+| id | GUID / string | Auto-generated |
+| yesterday | string | Required |
+| today | string | Required |
+| blockers | string? | Optional, nullable |
+| createdAt | DateTime / ISO string | Auto-set on creation |
+| blockerResolved | bool | Defaults to false |
 
-- **Standalone components only** — every component uses `standalone: true`
-- **Signals for state** — use `signal()`, `computed()`, `effect()` for component state
-- Use `inject()` function instead of constructor injection
-- Use new control flow: `@if`, `@for`, `@switch` (not `*ngIf`, `*ngFor`)
-- Use `HttpClient` via injectable services for API calls
-- Use **Tailwind CSS** for all styling
-- **Proxy config**: use `proxy.conf.json` to proxy `/api/*` requests to `http://localhost:5000` during dev
+## API Endpoints
+
+| Method | Route | Description |
+|--------|-------|-------------|
+| GET | `/api/standups` | List all entries, newest first |
+| POST | `/api/standups` | Create entry (yesterday, today, blockers) |
+| PATCH | `/api/standups/{id}/resolve` | Resolve a blocker |
+| GET | `/api/standups/weekly-summary` | Weekly aggregated stats with entries |
 
 ## Do NOT Use
 
@@ -141,15 +141,6 @@ npx prettier --write "src/**/*.{ts,html,css}"
 - Checks frontend/backend contract alignment
 - Verifies CLAUDE.md conventions are followed
 - Never writes code, only reviews and advises
-
-## API Endpoints
-
-| Method | Route | Description |
-|--------|-------|-------------|
-| GET | `/api/standups` | List all entries, newest first |
-| POST | `/api/standups` | Create entry (yesterday, today, blockers) |
-| PATCH | `/api/standups/{id}/resolve` | Resolve a blocker |
-| GET | `/api/standups/weekly-summary` | Weekly aggregated stats with entries |
 
 ## ADRs
 

@@ -103,4 +103,4 @@ npx prettier --write "src/**/*.{ts,html,css}"
 - Repo: https://github.com/ashayakc/standup-tracker.git
 - Main branch: `main`
 - Create feature branches off `main` (e.g., `feat/add-standup-form`)
-- Use `/push` slash command to commit and push changes
+- Use `/commitpush` slash command to stage, review, commit, and push changes

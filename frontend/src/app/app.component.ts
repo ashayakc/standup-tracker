@@ -34,6 +34,14 @@ import { StandupEntry } from './models/standup-entry';
         </div>
 
         @if (activeView() === 'daily') {
+          <div class="flex justify-end mb-4">
+            <button
+              (click)="onExport()"
+              class="border border-gray-300 bg-white text-gray-700 px-4 py-2 rounded hover:bg-gray-50 text-sm font-medium"
+            >
+              Export CSV
+            </button>
+          </div>
           <app-standup-form (entryCreated)="loadStandups()" />
           <app-standup-list [entries]="standups()" (resolve)="onResolve($event)" />
         } @else {
@@ -56,6 +64,10 @@ export class AppComponent {
     this.standupService.getAll().subscribe((entries) => {
       this.standups.set(entries);
     });
+  }
+
+  onExport() {
+    this.standupService.exportCsv();
   }
 
   onResolve(id: string) {

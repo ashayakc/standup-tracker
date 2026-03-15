@@ -111,12 +111,14 @@ npx prettier --write "src/**/*.{ts,html,css}"
 - Angular 18 standalone components, TypeScript strict mode
 - Focuses on UX, component design, HttpClient calls
 - Never touches backend files
+- **Always read `/frontend-expert` before starting any frontend work** — it contains the project's signals patterns, Tailwind conventions, error handling templates, and pitfalls to avoid
 
 ### Backend Developer
 - Works only in `/backend` folder
 - C# .NET 9 minimal API, no EF Core
 - Focuses on endpoints, models, in-memory store
 - Never touches frontend files
+- **Always read `/backend-expert` before starting any backend work** — it contains the project's endpoint patterns, thread safety approach, record conventions, error shapes, and validation patterns
 
 ### Doc Expert
 - Works across entire codebase read-only

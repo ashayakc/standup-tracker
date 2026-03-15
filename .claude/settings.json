@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "afterEdit": [
+      {
+        "matcher": "**/*.cs",
+        "command": "cd backend && dotnet format --include \"$CLAUDE_FILE_PATH\" --verbosity quiet 2>/dev/null || true"
+      }
+    ],
+    "afterWrite": [
+      {
+        "matcher": "**/*.cs",
+        "command": "cd backend && dotnet format --include \"$CLAUDE_FILE_PATH\" --verbosity quiet 2>/dev/null || true"
+      }
+    ]
+  }
+}

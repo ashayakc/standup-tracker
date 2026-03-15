@@ -25,4 +25,8 @@ export class StandupService {
   getWeeklySummary(): Observable<WeeklySummary[]> {
     return this.http.get<WeeklySummary[]>(`${this.apiUrl}/weekly-summary`);
   }
+
+  getExportUrl(): string {
+    return `${this.apiUrl}/export`;
+  }
 }
